@@ -31,9 +31,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events.filter(event => event instanceof NavigationEnd)
-      .subscribe((value: NavigationEnd) => {
-        this.pageName = value.url.replace("/", "");
+    this.router.events.filter(event => event instanceof NavigationEnd).pairwise()
+      .subscribe((value: [NavigationEnd, NavigationEnd]) => {
+        var previousPage = value[0].url.replace("/", "");
+        var currentPage = value[0].url.replace("/", "");
+        if(previousPage == "" && currentPage != "")
+          this.pageName = currentPage;
       });
   }
 
