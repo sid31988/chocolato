@@ -1,4 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import "rxjs/add/operator/filter";
+import "rxjs/add/operator/pairwise";
 
 @Component({
   selector: 'app-header',
@@ -7,11 +10,31 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  private _pageName: string;
+
+  public pageNameChanged: EventEmitter<string>;
+
+  @Input() get pageName(): string {
+    return this._pageName;
+  }
+
+  set pageName(value: string) {
+    this._pageName = value;
+    this.router.navigateByUrl("/" + value);
+    this.pageNameChanged.emit(value);
+  }
+
   @Input() title: string;
 
-  constructor() { }
+  constructor(private router: Router, private activedRoute: ActivatedRoute) {
+    this.pageNameChanged = new EventEmitter<string>();
+  }
 
   ngOnInit() {
+    this.router.events.filter(event => event instanceof NavigationEnd)
+      .subscribe((value: NavigationEnd) => {
+        this.pageName = value.url.replace("/", "");
+      });
   }
 
 }
