@@ -10,33 +10,23 @@ import "rxjs/add/operator/pairwise";
 })
 export class HeaderComponent implements OnInit {
 
-  private _pageName: string;
+  private pageName: string;
 
-  public pageNameChanged: EventEmitter<string>;
-
-  @Input() get pageName(): string {
-    return this._pageName;
-  }
-
-  set pageName(value: string) {
-    this._pageName = value;
-    this.router.navigateByUrl("/" + value);
-    this.pageNameChanged.emit(value);
+  public navigateTo(pageName: string) {
+    this.pageName = pageName;
+    this.router.navigateByUrl("/" + pageName);
   }
 
   @Input() title: string;
 
-  constructor(private router: Router, private activedRoute: ActivatedRoute) {
-    this.pageNameChanged = new EventEmitter<string>();
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.router.events.filter(event => event instanceof NavigationEnd).pairwise()
-      .subscribe((value: [NavigationEnd, NavigationEnd]) => {
-        var previousPage = value[0].url.replace("/", "");
-        var currentPage = value[0].url.replace("/", "");
-        if(previousPage == "" && currentPage != "")
-          this.pageName = currentPage;
+    this.router.events.filter(event => event instanceof NavigationEnd)
+      .subscribe((value: NavigationEnd) => {
+        var currentPageName = value.urlAfterRedirects.replace("/", "");
+        if(currentPageName !== "") this.navigateTo(currentPageName);
       });
   }
 

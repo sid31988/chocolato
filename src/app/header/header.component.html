@@ -4,9 +4,9 @@
             <a class="navbar-brand">{{title}}</a>
         </div>
         <ul class="nav navbar-nav">
-            <li [ngClass]="{'active' : pageName == 'home'}"><a (click)="pageName = 'home';">Home</a><li>
-            <li [ngClass]="{'active' : pageName == 'about'}"><a (click)="pageName = 'about';">About</a></li>
-            <li [ngClass]="{'active' : pageName == 'contactus'}"><a (click)="pageName = 'contactus';">Contact Us</a></li>
+            <li [ngClass]="{'active' : pageName == 'home'}"><a (click)="navigateTo('home');">Home</a><li>
+            <li [ngClass]="{'active' : pageName == 'about'}"><a (click)="navigateTo('about');">About</a></li>
+            <li [ngClass]="{'active' : pageName == 'contactus'}"><a (click)="navigateTo('contactus');">Contact Us</a></li>
         </ul>
     </div>
 </nav>
