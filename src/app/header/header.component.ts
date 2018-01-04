@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import "rxjs/add/operator/filter";
-import "rxjs/add/operator/pairwise";
 
 @Component({
   selector: 'app-header',
@@ -19,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   @Input() title: string;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
